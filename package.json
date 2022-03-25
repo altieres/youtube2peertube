@@ -1,0 +1,12 @@
+{
+  "name": "bitcoinheiros-yt2pt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "first-import-dev": "(source '.env' && node first.js)"
+  },
+  "dependencies": {
+    "axios": "^0.26.1"
+  }
+}
