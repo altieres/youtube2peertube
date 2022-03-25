@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "first-import-dev": "(source '.env' && node first.js)"
+    "first-import-dev": "(source '.env' && node first.js)",
+    "import-dev": "(source '.env' && node import.js)"
   },
   "dependencies": {
-    "axios": "^0.26.1"
+    "axios": "^0.26.1",
+    "xml2js": "^0.4.23"
   }
 }
