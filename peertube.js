@@ -5,6 +5,7 @@ class PeerTube {
     const ptApi = `${ptInstance}/api/v1`
 
     this.ptAllVideosUrl = `${ptApi}/users/me/videos`
+    this.ptUpdateVideoUrl = `${ptApi}/videos`
     this.ptGetChannelUrl = `${ptApi}/video-channels/${ptChannelName}`
     this.ptOauthClientsUrl = `${ptApi}/oauth-clients/local`
     this.ptAuthUrl = `${ptApi}/users/token`
@@ -27,6 +28,13 @@ class PeerTube {
     return resp.data.total <= offset + perPage
       ? resp.data.data
       : resp.data.data.concat(await this._channelVideoOnPage(offset + perPage))
+  }
+
+  async updateLangAndPriv(video) {
+    return await axios.put(`${this.ptUpdateVideoUrl}/${video.id}`,
+      { language: 'pt', privacy: '1' },
+      { headers: { Authorization: `Bearer ${this.authResponseData.access_token}` } },
+    )
   }
 
   async loadChannelId() {

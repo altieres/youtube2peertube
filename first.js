@@ -20,7 +20,10 @@ const peertube = new Peertube(ptInstance, ptChannelName)
   console.log('Youtube total videos (all.js file): ', all.length)
   console.log('Peertube total videos: ', channelVideosData.length)
 
-  await peertube.authenticate(ptUsername, ptPassword)
+  // fix privacy and language of already imported videos
+  // for (const video of channelVideosData) {
+  //   if (video.privacy.id == 3) await peertube.updateLangAndPriv(video)
+  // }
 
   for await (let ytVideo of all.reverse()) {
     const ytVideoId = ytVideo.id
