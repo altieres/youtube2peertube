@@ -70,9 +70,11 @@ class PeerTube {
 
   async importVideo(videoUrl, videoName) {
     const postData = {
-      'channelId': this.ptChannelId,
-      'name': videoName,
-      'targetUrl': videoUrl,
+      channelId: this.ptChannelId,
+      name: videoName,
+      targetUrl: videoUrl,
+      language: 'pt',
+      privacy: '1'
     }
 
     const importResponse = await axios.post(
