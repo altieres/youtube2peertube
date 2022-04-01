@@ -4,7 +4,7 @@ class PeerTube {
   constructor(ptInstance, ptChannelName) {
     const ptApi = `${ptInstance}/api/v1`
 
-    this.ptAllVideosUrl = `${ptApi}/video-channels/${ptChannelName}/videos`
+    this.ptAllVideosUrl = `${ptApi}/users/me/videos`
     this.ptGetChannelUrl = `${ptApi}/video-channels/${ptChannelName}`
     this.ptOauthClientsUrl = `${ptApi}/oauth-clients/local`
     this.ptAuthUrl = `${ptApi}/users/token`
@@ -19,7 +19,10 @@ class PeerTube {
 
   async _channelVideoOnPage(offset = 0) {
     const perPage = 50
-    const resp = await axios.get(this.ptAllVideosUrl, { params: { count: perPage, start: offset } })
+    const resp = await axios.get(this.ptAllVideosUrl, {
+      params: { count: perPage, start: offset },
+      headers: { Authorization: `Bearer ${this.authResponseData.access_token}` },
+    })
 
     return resp.data.total <= offset + perPage
       ? resp.data.data

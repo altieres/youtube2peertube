@@ -12,6 +12,8 @@ const dry = process.env.DRY_RUN
 const peertube = new Peertube(ptInstance, ptChannelName)
 
 ;(async function() {
+  await peertube.authenticate(ptUsername, ptPassword)
+
   const channelVideosData = await peertube.channelVideos()
 
   console.log('Importation summary:')
