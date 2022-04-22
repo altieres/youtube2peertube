@@ -25,6 +25,7 @@ const peertube = new Peertube(ptInstance, ptChannelName)
   //   if (video.privacy.id == 3) await peertube.updateLangAndPriv(video)
   // }
 
+  let notImportedYetCount = 0
   for await (let ytVideo of all.reverse()) {
     const ytVideoId = ytVideo.id
     const ytVideoName = ytVideo.title
@@ -32,6 +33,7 @@ const peertube = new Peertube(ptInstance, ptChannelName)
 
     const alreadyUploaded = channelVideosData.find((v) => v.name === ytVideoName)
     if (!alreadyUploaded) {
+      notImportedYetCount++
       console.log('Uploading:', ytVideoName)
       if (dry === 'false') {
         const importResponseData = await peertube.importVideo(ytVideoUrl, ytVideoName)
@@ -39,6 +41,9 @@ const peertube = new Peertube(ptInstance, ptChannelName)
       } else {
         console.log('DRY run, change to false on .env to upload')
       }
+      return
     }
   }
+
+  console.log('Not imported yet: ', notImportedYetCount)
 })();
