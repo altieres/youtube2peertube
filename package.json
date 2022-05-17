@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "first-import": "node first.js",
     "import": "node import.js",
     "first-import-dev": "(source '.env' && node first.js)",
     "import-dev": "(source '.env' && node import.js)"
