@@ -22,25 +22,30 @@ const peertube = new Peertube(ptInstance, ptChannelName)
   const ytRecentVideosData = await xml2js.parseStringPromise(ytRecentVideos.data)
   const last15Videos = ytRecentVideosData.feed.entry
 
-  const channelVideosData = await peertube.channelVideos()
+  await peertube.authenticate(ptUsername, ptPassword)
+  let channelVideosData = await peertube.channelVideos()
+  // console.log(channelVideosData)
 
   console.log('Importation summary:')
   console.log('Youtube rss videos: ', last15Videos.length)
   console.log('Peertube total videos: ', channelVideosData.length)
 
-  await peertube.authenticate(ptUsername, ptPassword)
-
   for await (let ytVideo of last15Videos) {
     const ytVideoId = ytVideo['yt:videoId']
     const ytVideoName = ytVideo['title'][0]
+    const ytVideoPublishDate = ytVideo.published[0].slice(0, 10)
     const ytVideoUrl = `${ytBaseVideoUrl}${ytVideoId}`
 
-    const alreadyUploaded = channelVideosData.find((v) => v.name === ytVideoName)
+    const alreadyUploaded = channelVideosData.find((v) =>
+      v.name === ytVideoName &&
+      v.originallyPublishedAt.slice(0, 10) === ytVideoPublishDate
+    )
+
     if (!alreadyUploaded) {
       console.log('Uploading:', ytVideoName)
       if (dry === 'false') {
-        // const importResponseData = await peertube.importVideo(ytVideoUrl, ytVideoName)
-        // console.log('importResponseData:', importResponseData)
+        const importResponseData = await peertube.importVideo(ytVideoUrl, ytVideoName)
+        console.log('importResponseData:', importResponseData)
       } else {
         console.log('DRY run, change to false on .env to upload')
       }
