@@ -1,10 +1,10 @@
 const fs = require('fs')
 const Peertube = require('./peertube')
-const all = require('./all')
+const all = require('./all-hash')
 
 const ytBaseVideoUrl = 'https://www.youtube.com/watch?v='
 
-const ytToPt = JSON.parse(fs.readFileSync('ytToPt.json'))
+const ytToPt = JSON.parse(fs.readFileSync('ytToPt-hash.json'))
 
 const ptInstance = process.env.PT_INSTANCE
 const ptChannelName = process.env.PT_CHANNEL_NAME
@@ -54,11 +54,11 @@ const peertube = new Peertube(ptInstance, ptChannelName)
           peertube: importResponseData?.video?.shortUUID || '>>imported<<',
         })
 
-        fs.writeFileSync('ytToPt.json', JSON.stringify(ytToPt.sort((a, b) => a.title > b.title ? 1 : -1)))
+        fs.writeFileSync('ytToPt-hash.json', JSON.stringify(ytToPt.sort((a, b) => a.title > b.title ? 1 : -1)))
       } else {
         console.log('DRY run, change to false on .env to upload')
       }
-      return
+      if (notImportedYetCount >= 5) return
     }
   }
 
