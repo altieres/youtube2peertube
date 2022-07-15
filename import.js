@@ -45,10 +45,11 @@ const peertube = new Peertube(ptInstance, ptChannelName)
       console.log('Uploading:', ytVideoName)
       if (dry === 'false') {
         const importResponseData = await peertube.importVideo(ytVideoUrl, ytVideoName)
-        console.log('importResponseData:', importResponseData)
+        console.log('Importing as:', importResponseData?.video?.shortUUID)
       } else {
         console.log('DRY run, change to false on .env to upload')
       }
     }
+    return
   }
 })();
