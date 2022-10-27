@@ -37,6 +37,13 @@ class PeerTube {
     )
   }
 
+  async updateDescription(video, newDescription) {
+    return await axios.put(`${this.ptUpdateVideoUrl}/${video.id}`,
+      { description: newDescription },
+      { headers: { Authorization: `Bearer ${this.authResponseData.access_token}` } },
+    )
+  }
+
   async loadChannelId() {
     const channelResponse = await axios.get(this.ptGetChannelUrl)
     const channelResponseData = channelResponse.data

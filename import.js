@@ -33,6 +33,7 @@ const peertube = new Peertube(ptInstance, ptChannelName)
   for await (let ytVideo of last15Videos) {
     const ytVideoId = ytVideo['yt:videoId']
     const ytVideoName = ytVideo['title'][0]
+    const ytVideoDescription = ytVideo['media:group'][0]['media:description'][0]
     const ytVideoPublishDate = ytVideo.published[0].slice(0, 10)
     const ytVideoUrl = `${ytBaseVideoUrl}${ytVideoId}`
 
@@ -49,7 +50,14 @@ const peertube = new Peertube(ptInstance, ptChannelName)
       } else {
         console.log('DRY run, change to false on .env to upload')
       }
+    } else {
+      console.log('Updating description:', ytVideoName)
+      if (dry === 'false') {
+        const updateResponseData = await peertube.updateDescription(alreadyUploaded, ytVideoDescription)
+        console.log('Updated description:', updateResponseData?.shortUUID)
+      } else {
+        console.log('DRY run, change to false on .env to update description')
+      }
     }
-    return
   }
 })();
