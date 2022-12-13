@@ -10,14 +10,13 @@ const ytChannelId = process.env.YT_CHANNEL_ID
 const ptInstance = process.env.PT_INSTANCE
 const ptChannelName = process.env.PT_CHANNEL_NAME
 const ptUsername = process.env.PT_USERNAME
-const ptPassword = process.env.PT_PASSWORD
 const dry = process.env.DRY_RUN
 const ytRssUrl = `${ytBaseRssUrl}${ytChannelId}`
 console.log(ytRssUrl)
 
 const peertube = new Peertube(ptInstance, ptChannelName)
 
-;(async function() {
+module.exports = async function importer(ptPassword) {
   const ytRecentVideos = await axios.get(ytRssUrl)
   const ytRecentVideosData = await xml2js.parseStringPromise(ytRecentVideos.data)
   const last15Videos = ytRecentVideosData.feed.entry
@@ -60,4 +59,4 @@ const peertube = new Peertube(ptInstance, ptChannelName)
       }
     }
   }
-})();
+}
